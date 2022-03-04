@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="gurdy">
+
+    <xacro:property name="pc_cam_body_link_radius" value="0.1"/>
+    <xacro:property name="pc_cam_body_link_length" value="0.05"/>
+    <xacro:property name="pc_cam_body_link_mass" value="50"/>
+
+    <!-- The same for all objects-->
+    <xacro:property name="kp" value="1000.0"/>
+	<xacro:property name="kd" value="1000.0"/>
+	<xacro:property name="mu1" value="10.0"/>
+    <xacro:property name="mu2" value="10.0"/>
+
+    <xacro:macro  name="cylinder_inertia" params="mass r l">
+      <inertia  ixx="${mass*(3*r*r+l*l)/12}" ixy = "0" ixz = "0"
+                iyy="${mass*(3*r*r+l*l)/12}" iyz = "0"
+                izz="${mass*(r*r)/2}" />
+    </xacro:macro >
+
+    <!-- The support base for the camera -->
+    <xacro:macro name="pc_cam">
+
+        <link name="base_link">
+        </link>
+        
+        <link name="pc_cam_body_link">
+            <inertial>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <mass value="${pc_cam_body_link_mass}" />
+                <xacro:cylinder_inertia mass="${pc_cam_body_link_mass}" r="${pc_cam_body_link_radius}" l="${pc_cam_body_link_length}"/>                
+            </inertial>
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <cylinder radius="${pc_cam_body_link_radius}" length="${pc_cam_body_link_length}"/>
+                </geometry>
+            </collision>
+            <visual>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <cylinder radius="${pc_cam_body_link_radius}" length="${pc_cam_body_link_length}"/>
+                </geometry>
+            </visual>
+        </link>
+
+        <gazebo reference="pc_cam_body_link">
+            <kp>${kp}</kp>
+            <kd>${kd}</kd>
+            <mu1>${mu1}</mu1>
+            <mu2>${mu2}</mu2>
+        </gazebo>
+
+        <joint name="fixed" type="fixed">
+            <parent link="base_link"/>
+            <child link="pc_cam_body_link"/>
+        </joint>
+
+
+    </xacro:macro>
+
+    <xacro:pc_cam/>
+
+
+</robot>
