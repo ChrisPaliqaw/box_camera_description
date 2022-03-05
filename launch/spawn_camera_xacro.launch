@@ -5,15 +5,22 @@
     <arg name="x" default="0.0" />
     <arg name="y" default="0.8" />
     <arg name="z" default="0.02" />
+    <arg name="R" default="0.0" />
+    <arg name="P" default="0.0" />
+    <arg name="Y" default="-1.52" />
     
     <arg name="robot_name" default="pc_cam" />
     <arg name="xacro_file_path" default="$(find box_camera_description)/urdf/pointcloud_camera.xacro" />
-    
 
     <!-- Load the URDF into the ROS Parameter Server -->
     <param name="robot_description" command="$(find xacro)/xacro $(arg xacro_file_path)" />
     
     <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
     <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
-    args="-urdf -x $(arg x) -y $(arg y) -z $(arg z)  -model $(arg robot_name) -param robot_description"/>
+    args="-urdf -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)  -model $(arg robot_name) -param robot_description"/>
+
+    <!-- Publish tf and joint states -->
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+    respawn="false" output="screen">
+  </node>
 </launch>

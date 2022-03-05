@@ -1,9 +1,19 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="gurdy">
+    <!--
+    /home/user/simulation_ws/src/robotnik_sensors_master_project/robotnik_sensors/urdf/all_sensors.urdf.xacro
+    /home/user/simulation_ws/src/robotnik_sensors_master_project/robotnik_sensors/urdf/intel_r430.urdf.xacro
+    -->
+    <xacro:include filename="$(find robotnik_sensors)/urdf/all_sensors.urdf.xacro"/>
 
     <xacro:property name="pc_cam_body_link_radius" value="0.1"/>
     <xacro:property name="pc_cam_body_link_length" value="0.05"/>
     <xacro:property name="pc_cam_body_link_mass" value="50"/>
+
+    <!-- Camera at a distance of 1.2 meters in the z axis with respect from the pc_cam_base_link.
+         The camera has an inclination of 30º in the pitch axis.-->
+    <xacro:property name="camera_height_from_base" value="1.2"/>
+    <xacro:property name="camera_pitch" value="1.047"/>
 
     <!-- The same for all objects-->
     <xacro:property name="kp" value="1000.0"/>
@@ -42,18 +52,41 @@
                 </geometry>
             </visual>
         </link>
+        <!--
+        <xacro:macro name="sensor_r430" params="prefix parent prefix_topic:='front_rgbd_camera' *origin">
+            <joint name="${prefix}_camera_joint" type="fixed">
+                <xacro:insert_block name="origin" />      
+                <parent link="${parent}"/>
+                <child link="${prefix}_camera_link" />
+            </joint>
+            ...
+        -->
+        <xacro:sensor_r430 prefix="pc_cam" parent="pc_cam_body_link" >
+            <origin xyz="0 0 ${camera_height_from_base}" rpy="0 0 ${camera_pitch}"/>
+        </xacro:sensor_r430>
+
 
         <gazebo reference="pc_cam_body_link">
+            <!--
             <kp>${kp}</kp>
             <kd>${kd}</kd>
             <mu1>${mu1}</mu1>
             <mu2>${mu2}</mu2>
+            -->
         </gazebo>
 
-        <joint name="fixed" type="fixed">
+        <joint name="base_joint" type="fixed">
             <parent link="base_link"/>
             <child link="pc_cam_body_link"/>
         </joint>
+
+        <!--
+        <joint name="pc_cam_body_front_rgbd_camera_link" type="fixed">
+            <parent link="base_link"/>
+            <child link="pc_cam_body_link"/>
+            <origin xyz="0 0 ${camera_height_from_base}" rpy="0 0 ${camera_pitch}"/>
+        </joint>
+        -->
 
 
     </xacro:macro>
