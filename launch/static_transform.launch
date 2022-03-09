@@ -1,0 +1,5 @@
+<launch>
+    <node pkg="tf" type="static_transform_publisher" name="world_to_base_link_tf" 
+          args="4.71 -4.279791 0.02 0.0 0.0 0.0 world pc_cam_base_link 100">
+    </node>
+</launch>

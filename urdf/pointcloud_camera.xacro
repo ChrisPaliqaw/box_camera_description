@@ -35,7 +35,7 @@
     <!-- The support base for the camera -->
     <xacro:macro name="pc_cam">
 
-        <link name="base_link">
+        <link name="pc_cam_base_link">
         </link>
         
         <link name="pc_cam_body_link">
@@ -78,7 +78,7 @@
         </gazebo>
 
         <joint name="base_joint" type="fixed">
-            <parent link="base_link"/>
+            <parent link="pc_cam_base_link"/>
             <child link="pc_cam_body_link"/>
         </joint>
 
