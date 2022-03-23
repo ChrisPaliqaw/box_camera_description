@@ -6,7 +6,7 @@
     <arg name="z" default="0.02" />
     <arg name="R" default="0.0" />
     <arg name="P" default="0.0" />
-    <arg name="Y" default="-0.0" />
+    <arg name="Y" default="0.0" />
     
     <arg name="robot_name" default="pc_cam" />
     <arg name="xacro_file_path" default="$(find box_camera_description)/urdf/pointcloud_camera.xacro" />

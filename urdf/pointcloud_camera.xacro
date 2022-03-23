@@ -13,7 +13,7 @@
     <!-- Camera at a distance of 1.2 meters in the z axis with respect from the pc_cam_base_link.
          The camera has an inclination of 30º in the pitch axis.-->
     <xacro:property name="camera_height_from_base" value="1.2"/>
-    <xacro:property name="camera_pitch" value="1.047"/>
+    <xacro:property name="camera_pitch" value="0.52"/>
 
     <!-- The same for all objects-->
     <xacro:property name="kp" value="1000.0"/>
@@ -69,7 +69,7 @@
             ...
         -->
         <xacro:sensor_r430 prefix="pc_cam" parent="pc_cam_body_link" >
-            <origin xyz="0 0 ${camera_height_from_base}" rpy="0 0 ${camera_pitch}"/>
+            <origin xyz="0 0 ${camera_height_from_base}" rpy="0 ${camera_pitch} 0"/>
         </xacro:sensor_r430>
 
 
